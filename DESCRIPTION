@@ -8,7 +8,9 @@ Description: Calculates a comprehensive list of features from profile hidden mar
     Adapts and ports features for use with HMMs instead of Position Specific Scoring Matrices, in order to take 
     advantage of more accurate multiple sequence alignment by programs such as HHBlits and HMMer. Features calculated 
     by this package can be used for protein fold classification, protein structural class prediction, subcellular 
-    localization and protein-protein interaction, among other tasks.
+    localization and protein-protein interaction, among other tasks. Some examples of features extracted are found in
+    An et al. (2019)<DOI:10.1177/1176934319879920>, Jin & Zhu (2021) <DOI:10.1155/2021/8629776>, Lyons et al. (2015)
+    <DOI:10.1109/tnb.2015.2457906> and Saini et al. (2015) <DOI:10.1016/j.jtbi.2015.05.030>.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
