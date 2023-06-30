@@ -1,7 +1,7 @@
 Package: protHMM
 Type: Package
 Title: Protein Feature Extraction from Profile Hidden Markov Models
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Shayaan", "Emran", email = "shayaan.emran@gmail.com", role = c("aut", "cre", "cph"))
 Maintainer: Shayaan Emran <shayaan.emran@gmail.com>
 Description: Calculates a comprehensive list of features from profile hidden Markov models (HMMs) of proteins. 
@@ -9,7 +9,7 @@ Description: Calculates a comprehensive list of features from profile hidden Mar
     advantage of more accurate multiple sequence alignment by programs such as HHBlits and HMMer. Features calculated 
     by this package can be used for protein fold classification, protein structural class prediction, sub-cellular 
     localization and protein-protein interaction, among other tasks. Some examples of features extracted are found in
-    Song et al. (2018)<DOI:10.3390/app8010089>, Jin & Zhu (2021) <DOI:10.1155/2021/8629776>, Lyons et al. (2015)
+    Song et al. (2018) <DOI:10.3390/app8010089>, Jin & Zhu (2021) <DOI:10.1155/2021/8629776>, Lyons et al. (2015)
     <DOI:10.1109/tnb.2015.2457906> and Saini et al. (2015) <DOI:10.1016/j.jtbi.2015.05.030>.
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -27,3 +27,4 @@ Suggests:
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/semran9/protHMM/
+BugReports: https://github.com/semran9/protHMM/issues
