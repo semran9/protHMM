@@ -4,7 +4,7 @@
 # protHMM
 
 <!-- badges: start -->
-
+![R CMD check](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml/badge.svg)
 
 <!-- badges: end --> 
 
