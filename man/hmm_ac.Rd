@@ -7,13 +7,25 @@
 hmm_ac(hmm, lg = 4)
 }
 \arguments{
-\item{hmm}{path of a HMM output file}
+\item{hmm}{The name of a profile hidden markov model file.}
 
-\item{lg}{lag number}
+\item{lg}{The lag value, which indicates the distance between residues.}
 }
 \value{
-A vector of length 20 * the lag value; by default this is a vector of length 80.
+A vector of length 20 \eqn{\times} the lag value; by default this is a vector of length 80.
 }
 \description{
-Calculated auto-covariance for profile hidden markov model outputs from HHblits
+This feature calculates the covariance between two residues separated by a lag value within
+the same amino acid emission frequency column along the protein sequence.
+}
+\note{
+The lag value must be less than the length of the protein sequence
+}
+\examples{
+h<- hmm_ac(system.file("extdata", "1DLHA2-7", package="protHMM"))
+}
+\references{
+Dong, Q., Zhou, S., & Guan, J. (2009).
+A new taxonomy-based protein fold recognition approach based on autocross-covariance transformation.
+Bioinformatics, 25(20), 2655–2662.
 }
