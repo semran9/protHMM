@@ -2,7 +2,7 @@ Package: protHMM
 Type: Package
 Title: Protein Feature Extraction from Profile Hidden Markov Models
 Version: 0.1.0
-Authors@R: person("Shayaan", "Emran", email = "shayaan.emran@gmail.com", role = c("aut", "cre"))
+Authors@R: person("Shayaan", "Emran", email = "shayaan.emran@gmail.com", role = c("aut", "cre", "cph"))
 Maintainer: Shayaan Emran <shayaan.emran@gmail.com>
 Description: Calculates a comprehensive list of features from profile hidden markov models (HMMs) of proteins. 
     Adapts and ports features for use with HMMs instead of Position Specific Scoring Matrices, in order to take 
@@ -24,3 +24,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://github.com/semran9/protHMM/
