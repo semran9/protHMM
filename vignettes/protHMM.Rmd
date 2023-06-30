@@ -1,0 +1,360 @@
+---
+title: "protHMM"
+output: rmarkdown::html_vignette
+bibliography: References.bib
+vignette: >
+  %\VignetteIndexEntry{protHMM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 1: Introduction
+
+The goal of protHMM is to help integrate profile hidden markov model (HMM) representations of proteins into the machine learning and bioinformatics workflow. protHMM ports a number of features from use in Position Specific Scoring Matrices (PSSMs) to HMMs, along with implementing features used with HMMs specifically, which to our knowledge has not been done before. The adoption of HMM representations of proteins derived from HHblits and HMMer also presents an opportunity for innovation; it has been shown that HMMs can benefit from better multiple sequence alignment than PSSMs and thus get better results than corresponding HMMs using similar feature extraction techniques [@lyons-2015]. protHMM implements 20 different feature extraction techniques to provide a comprehensive list of feature sets for use in bioinformatics tasks ranging from protein fold classification to protein-protein interaction. 
+
+```{r setup}
+library(protHMM)
+```
+## 2: Autocorrelation: hmm_MB, hmm_MA, hmm_GA
+
+protHMM implements normalized Moreau-Broto, Moran and Geary autocorrelation descriptors, each of which measure the correlation between two amino acid residues separated by a lag value, (lg) along the sequence. Each of these feature vectors return a vector of $20 \times lg$. @liang-2015 provide a mathematical representation for each of these features, having used them to predict protein structural class:
+
+#### Moreau-Broto
+
+${N_{lg}^j = \frac{1} {L-lg} \sum_{i = 1} ^ {L-lg} H_{i, j} \times H_{i+lg, j}, \space (j = 1,2..20, 0 < d < L)}$
+
+In which ${N_{lg}^j}$ is the Moreau-Broto correlation factor for column $j$, $lg$ is the lag value, $L$ is the length of the protein sequence and $H$ represents the HMM matrix.
+
+#### Moran
+
+${N_{lg}^j = \frac{\frac{1} {L-lg} \sum_{i = 1} ^ {L-lg} (H_{i, j} - \bar{H_j}) \times (H_{i+lg, j} - \bar{H_j})}{\frac {1} {L} \sum_{i = 1} {L} (H_{i, j} - \bar{H_j})^2}, \space (j = 1,2..20, 0 < d < L)}$
+
+In which ${N_{lg}^j}$ is the Moran correlation factor for column $j$, $lg$ is the lag value, $L$ is the length of the protein sequence, $\bar{H_j}$ represents the average of column $j$ in matrix $H$ and $H$ represents the HMM matrix.
+
+#### Geary
+
+${N_{lg}^j = \frac{\frac{1} {2(L-lg)} \sum_{i = 1} ^ {L-lg} (H_{i, j} - H_{i+d, j})^2}{\frac {1} {L-1} \sum_{i = 1} {L} (H_{i, j} - \bar{H_j})^2}, \space (j = 1,2..20, 0 < d < L)}$
+
+In which ${N_{lg}^j}$ is the Geary correlation factor for column $j$, $lg$ is the lag value, $L$ is the length of the protein sequence and $H$ represents the HMM matrix.
+
+#### Examples
+
+```{r example}
+library(protHMM)
+## basic example code
+h_MB<- hmm_MB(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h_MA<- hmm_MA(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h_GA<- hmm_GA(system.file("extdata", "1DLHA2-7", package="protHMM"))
+head(h_MB, 20)
+head(h_MA, 20)
+head(h_GA, 20)
+```
+
+## 3: Covariance: hmm_AC, hmm_CC
+
+protHMM implements two covariance-based features, autocovariance (AC) and cross covariance (CC). These features calculate the covariance between two residues separated by a lag value lg along the sequence. AC calculates this for positions in the same column, and CC for positions that are not in the same column of the HMM. It should also be noted that for these features, the HMM matrix is not converted to probabilities, unlike other features. Both features were used for protein fold recognition.
+
+#### Autocovariance
+
+@dong-2009 provide a mathematical representation of autocovariance:
+
+$AC(j, lg) = \sum_{i = 1}^{L-lg} \frac{(H_{i, j} - \bar{H_j}) \times (H_{i+lg, j} - \bar{H_j})}{L-lg}, \space j = 1,2..20$
+
+In which $AC(j,\space lg)$ is the autocovariance factor for column $j$, $lg$ is the lag value, $L$ is the length of the protein sequence,  $\bar{H_j}$ represents the average of column $j$ in matrix $H$ and $H$ represents the HMM matrix.
+
+#### Cross covariance
+
+@dong-2009  also provide a mathematical representation of cross covariance:
+
+$AC(j_1, j_2, lg) = \sum_{i = 1}^{L-lg} \frac{(H_{i, j_1} - \bar{H_{j_1}}) \times (H_{i+lg, j_2} - \bar{H_{j_2})}}{L-lg}, \space j_1,j_2 = 1, 2, 3...20, \space j_1 \neq j_2$
+
+In which $AC(j_1,\space j_2,\space lg)$ is the cross correlation factor for columns $j_1, \space j_2$, $lg$ is the lag value, $L$ is the length of the protein sequence,  $\bar{H_{j_i}}$ represents the average of column $j_i$ in matrix $H$ and $H$ represents the HMM matrix.
+
+#### Examples
+
+```{r}
+library(protHMM)
+## basic example code
+h_AC<- hmm_ac(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h_CC<- hmm_cc(system.file("extdata", "1DLHA2-7", package="protHMM"))
+head(h_AC, 20)
+head(h_CC, 20)
+```
+
+
+## 4: Bigrams and Trigrams
+
+The bigrams and trigrams features are outlined by @lyons-2015, and they interpret the likelihood of 2 (bi) or 3 (tri) amino acids occurring consecutively in the sequence. Thus, they take shape as a 20 x 20 matrix for bigrams and a 20 x 20 x 20 array for trigrams, which are then flattened to create vectors of length 400 and 8000. These features were used by @lyons-2015 for protein fold recognition.
+
+#### Bigrams
+
+@lyons-2015 outlines bigrams mathematically as $B[i, j]$, where:
+
+${B[i, j] = \sum_{a = 1}^{L-1} H_{a, i}H_{a+1, j}}$
+ 
+And ${H}$ corresponds to the original HMM matrix, and ${L}$ is the number of rows in ${H}$.
+
+#### Trigrams
+
+@lyons-2015 outlines bigrams mathematically as $B[i, j, k]$, where:
+
+${B[i, j, k] = \sum_{a = 1}^{L-2} H_{a, i}H_{a+1, j}H_{a+2, k}}$
+
+And ${H}$ corresponds to the original HMM matrix, and ${L}$ is the number of rows in ${H}$.
+
+#### Examples
+
+```{r}
+library(protHMM)
+## basic example code
+h_tri<- hmm_trigrams(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h_bi<- hmm_bigrams(system.file("extdata", "1DLHA2-7", package="protHMM"))
+head(h_tri, 20)
+head(h_bi, 20)
+```
+
+
+## 5: CHMM
+
+The CHMM feature begins by creating a CHMM, which is created by constructing 4 matrices, ${A, B, C, D}$ from the original HMM ${H}$. ${A}$ contains the first 75 percent of the original matrix ${H}$ row-wise, ${B}$ the last 75 percent, ${C}$ the middle 75 percent and ${D}$ the entire original matrix [@an-2019]. These are then merged to create the new CHMM ${Z}$. From there, the bigrams feature is calculated with a flattened 20 x 20 matrix ${B}$, in which 
+
+${B[i, j] = \sum_{a = 1}^{L-1} Z_{a, i} \times Z_{a+1, j}}$
+
+${H}$ corresponds to the original HMM matrix, and ${L}$ is the number of rows in ${Z}$ [@an-2019]. Local Average Group, or LAG is calculated by first splitting the CHMM into $j$ groups and then the following:
+
+$LAG(k) = \frac{20}{L}\sum_{p = 1}^{N/20} Mt[p+(i-1)\times(N/20),\space j]$
+
+Where ${L}$ is the number of rows in ${Z}$ and $Mt[p+(i-1)\times(N/20),\space j]$ represents the row vector of the CHMM and the $i$th position in the $j$th group [@an-2019]. These features are then fused, and a vector of 800 along the the original length 400 bigrams and LAG vectors are returned. The CHMM features were used to predict protein-protein interactions.
+
+#### Examples
+
+```{r}
+library(protHMM)
+h_fused<- chmm(system.file("extdata", "1DLHA2-7", package="protHMM"))[[1]]
+h_lag<- chmm(system.file("extdata", "1DLHA2-7", package="protHMM"))[[2]]
+h_bigrams<- chmm(system.file("extdata", "1DLHA2-7", package="protHMM"))[[3]]
+head(h_fused, 20)
+head(h_lag, 20)
+head(h_bigrams, 20)
+```
+
+
+## 6: Distance
+
+The distance feature calculates the cosine distance matrix between two HMMs ${A}, \space{B}$ before dynamic time warp is applied to the distance matrix calculate the cumulative distance between the HMMs, which acts as a measure of similarity [@lyons-2016]. The cosine distance matrix ${D}$ is calculated with: 
+
+${D[a_i, b_j] = 1 - \frac{a_ib_j^{T}}{a_ia_i^Tb_jb_j^T}}$
+
+in which ${a_i}$ and ${a_i}$ refer to row vectors of ${A}$ and ${B}$ respectively [@lyons-2016]. This in turn means that $D$ is of dimensions ${nrow(A), nrow(b)}$. Dynamic time warp then calculates the cumulative distance by calculating matrix: 
+
+$C[i, j] = min(C[i-1, j], C[i, j-1], C[i-1, j-1]) + D[i, j]$ 
+
+where ${C_{i,j}}$ is 0 when ${i}$ or ${j}$ are less than 1 [@lyons-2016]. The lower rightmost point of the matrix ${C}$ is then returned as the cumulative distance between proteins. The distance feature was used by @lyons-2016 for protein fold recognition.
+
+#### Example
+
+```{r}
+library(protHMM)
+# basic example code
+h<- hmm_distance(system.file("extdata", "1DLHA2-7", package="protHMM"), system.file("extdata", "1TEN-7", 
+                                                                                      package="protHMM"))
+h
+```
+
+
+## 7: FP_HMM
+
+FP_HMM consists of two vectors, ${d, s}$. Vector ${d}$ corresponds to the sums across the sequence for each of the 20 amino acid columns [@zahiri-2013]. Vector ${s}$ corresponds to a flattened matrix of $S$ where: 
+
+${S[i, j] = \sum_{k = 1}^{L} H[k, j] \times \delta[k, i]}$
+
+in which ${\delta[k, i] = 1}$ when ${A_i = H[k, j]}$ and 0 otherwise [@zahiri-2013]. ${A}$ refers to a list of all possible amino acids, ${i, j}$ span from ${1:20}$. This feature has been used for the prediction of protein-protein interactions.
+
+#### Example
+
+```{r}
+library(protHMM)
+# basic example code
+h<- fp_hmm(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h[[1]]
+head(h[[2]], 20)
+```
+
+## 8: HMM_GSD
+
+This feature was created by @jin-2021 and begins by creates a grouping matrix $G$ by assigning each position a number $1,2, 3$ based on the value at each position of HMM matrix $H$; $1$ represents the low probability group, $2$ the medium and $3$ the high probability group. The number of total points in each group for each column is then calculated, and the sequence is then split based upon the the positions of the 1st, 25th, 50th, 75th and 100th percentile (last) positioned points for each of the three groups, in each of the 20 columns of the grouping matrix. Thus for column $j$:
+
+${S(k, \space j, \space z) = \sum_{i = 1}^{(z) \times.25 \times N} |G[i,\space j] = k|}$
+
+where ${k}$ is the group number, ${z = 1,2,3,4}$ and ${N}$ corresponds to number of rows in matrix ${G}$ [@jin-2021].
+
+#### Example
+
+```{r}
+library(protHMM)
+# basic example code
+h<- hmm_GSD(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h[1:40]
+```
+
+
+## 9: Pseudo HMM: IM_psehmm and pse_hmm
+
+Both of the pseudo HMM features, pse_hmm and IM_psehmm, are based off of @chou-2007's psuedo PSSM concept. This was engineered in order to create non-variable length representations of proteins, while keeping sequence order information. IM_psehmm stands for improved pseudo hmm, which is based off of @ruan-2020's improvements to the @chou-2007's initial offering; @ruan-2020's offering is still based on the PSSM matrix. As such, this feature is a port for use with HMMs.
+
+#### pseudo_hmm
+
+Mathematically, pseudo_hmm is made of the fusion of 2 vectors. The first is of the means across the 20 amino acid emission frequency columns of the HMM. The second can be found in the following equation [@chou-2007]:
+
+$V_{j}^{i} = \frac{1}{L-i}\sum_{k = 1}^{L-i}H[k, j] \times H[k+i, j], \space j = 1,2..20, \space i < L$
+
+$H$ represents the HMM matrix, $L$ represents the row number of $H$, $i$ represents the amount of contiguous amino acids that correlation is measured across and $V_{j}^{i}$ represents the value of the vector for the $j$th column and $i$th most contiguous amino acids. This results in a vector of $20 + g \times 20$.
+
+#### IM_pse_hmm
+
+IM_pse_hmm is also the fusion of two vectors, one being the same means vector described above. The second can be found as [@ruan-2020]:
+
+$V_{j}^{d} = \frac{1}{20-d}\sum_{k = 1}^{L}H[k, j] \times H[k, j+d], \space j = 1,2..20, \space d < 20$
+
+Where $H$ the HMM matrix, $L$ represents the number of rows in $H$ and $V_{j}^i$ represents the value in the feature vector for column $j$ and columnal distance parameter $d$. This results in a vector of length ${20+20\times d-d\times\frac{d+1}{2}}$.
+
+## 10: Local Binary Pattern
+
+This feature is based off of @li-2019's work using local binary pattern to extract features from PSSMs to use in protein-protein interaction prediction. The local binary pattern extraction used here can be defined as $B = b(s(H_{m, n+1}-H_{m, n}), s(H_{m+1, n+1}-H_{m, n}), s(H_{m+1, n}-H_{m, n})...s(H_{m-1, n+1}-H_{m, n})))$, where $H[m,n]$ signifies the center of a local binary pattern neighborhood ($2<m<L-1,2<n<20, L = nrow(H)$), $H$ refers to the HMM matrix, $s(x) = 1$ if $x \ge 0$, $s(x) = 0$ otherwise and $b$ refers to a function that converts a binary number to a decimal number. The local binary pattern features are then put into a histogram with 256 bins, one for each possible binary value. This is returned as a 256 length vector.
+
+#### Example
+
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_LBP(system.file("extdata", "1TEN-7", package="protHMM"))
+h[1:20]
+```
+
+
+## 11: Linear Predictive Coding
+
+In this feature, linear predictive coding (LPC) is used to extract a vector $d$ of length $g$ from each of the 20 amino acid emission frequency columns of the HMM matrix. linear predictive coding considers that position $H[i, j]$ in the HMM matrix can be approximated by $\sum_{k = 1}^{g} d_{k, j}a_{i,j}$. The feature vector extracted is thus the vector of d; this is done through the phonTools package [@phonTools]. This assumes $g$ of 14, and thus the feature vector generated if $14\times20 = 280$. This feature is based off of @qin-2015's work, in which they used an LPC feature set to predict protein structural class. 
+
+#### Example
+
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_LPC(system.file("extdata", "1TEN-7", package="protHMM"))
+h[1:20]
+```
+
+
+## 12: SCSH
+
+This feature is documented by @mohammadi-2022 and was used for protein-protein interaction prediction. The SCSH feature returns the k-mer composition between a protein's consensus sequence given by the HMM and the protein's actual sequence, for k = 2,3. First, all possible k-mers for all of the 20 possible amino acids are calculated (${20^2}$ and ${20^3}$ permutations for 2 and 3-mers respectively). With those permutations, different vectors of length 400 and 8000 are created, vectors $v_2, \space v_3$. Each position on the vectors corresponds to a specific k-mer, i.e $v_2[1] = 'AA'$ and $v_2[1] = 'AAA'$. Then, the protein sequence that corresponds to the HMM scores is extracted, and put into a bipartite graph with the actual protein sequence. Each path of length 1 or 2 is found on the graph, and the corresponding vertices on the graph are noted as possible 2 and 3-mers. For each 2 or 3-mer found from these paths, 1 is added to the position that corresponds to that 2/3-mer in the 2-mer and 3-mer vectors, which are the length 400 and 8000 vectors created previously. The vectors are then returned.
+
+#### Examples
+
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_SCSH(system.file("extdata", "1TEN-7", package="protHMM"))
+## 2-mers
+h[[1]][1:20]
+## 3-mers: specific indexes as most of the vector is 0
+h[[2]][313:333]
+```
+
+
+## 13: Separated Dimers
+
+Separated Dimers refers the the probability that there will be an amino acid dimer between amino acid residues separated by a distance of $l$. @saini-2015 conceived of this feature and applied it to protein fold recognition; mathematically, separated dimers calculates matrix $F$:
+
+${F[m, n] = \sum_{i = 1}^{L-l} H_{i, m}H_{i+l, n}}$
+
+${H}$ corresponds to the original HMM matrix, and $L$ is the number of rows in $H$. Matrix $F$ is then flattened to
+a feature vector of length 400, and returned.
+
+#### Examples
+
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_SepDim(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h[1:40]
+```
+
+
+## 14: Single Average Group
+
+@nanni-2014 pioneer the Single Average Group feature and use it for protein classification. This feature groups together rows that are related to the same amino acid, using a vector ${SA(k)}$, in which ${k}$ spans ${1:400}$ and:
+
+${SA(k) = avg_{i \space = \space 1, 2... L}\space H[i, j] \times \delta(P(i), A(z))}$
+
+in which ${H}$ is the HMM matrix, ${P}$ in the protein sequence, ${A}$ is an ordered set of amino acids, the variables ${j, \space z = 1, 2, 3...20}$, the variable ${k = j + 20 \times (z-1)}$ when creating the vector. ${\delta()}$ represents Kronecker's delta.
+
+#### Example
+
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_Single_Average(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h[1:40]
+```
+
+
+## 15: Smoothed HMM
+
+This feature extraction technique is found in @fang-2013, being used in conjunction with another technique for ligand binding site prediction. This feature smooths the HMM matrix $H$ by using sliding window of length $sw$ to incorporate information from up and downstream residues into each row of the HMM matrix. Foreach HMM row \eqn{r_i}:
+
+$r_i = \sum_{x \space = \space i-\frac{sw}{2}}^{i+\frac{sw}{2}}{r_x}$
+
+for ${i = 1, 2, 3...L}$, where ${L}$ is the number of rows in ${H}$. For rows such as the beginning and ending rows, zero matrices of dimensions $sw/2, 20$ are appended to ${H}$.
+
+#### Example
+
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_smooth(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h[1,]
+```
+
+
+## 16: Singular Value Decomposition
+
+This feature extraction method is found in @song-2018, and uses singular value decomposition to extract a feature vector from a HMM matrix. SVD factorizes the matrix $H$ of dimensions ${i, j}$ to
+
+${U[i, r] \times \Sigma[r, r] \times V[r, j]}$ 
+
+The diagonal values of ${\Sigma}$ are known as the singular values of matrix $H$, and are what are returned with this function. This feature was used to predict protein-protein interactions.
+
+#### Example
+
+```{r}
+library(protHMM)
+# basic example code
+h<- hmm_svd(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h
+```
+
+
+## 17: Read
+
+This function reads in the 20 amino acid emission frequency columns used in the feature extraction methods discussed previously, and converts the columns into probabilities.
+
+#### Example
+```{r}
+library(protHMM)
+## basic example code
+h<- hmm_read(system.file("extdata", "1DLHA2-7", package="protHMM"))
+h[1,]
+```
+
+
+## References
+
