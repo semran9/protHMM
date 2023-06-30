@@ -17,9 +17,9 @@ knowledge has not been done before. The adoption of HMM representations
 of proteins derived from HHblits and HMMer also presents an opportunity
 for innovation; it has been shown that HMMs can benefit from better
 multiple sequence alignment than PSSMs and thus get better results than
-corresponding HMMs using similar feature extraction techniques
-\[@lyons-2015\]. protHMM implements 20 different feature extraction
-techniques to provide a comprehensive list of feature sets for use in
+corresponding HMMs using similar feature extraction techniques (Lyons et
+al. 2015). protHMM implements 20 different feature extraction techniques
+to provide a comprehensive list of feature sets for use in
 bioinformatics tasks ranging from protein fold classification to
 protein-protein interaction.
 
@@ -90,3 +90,10 @@ h_2<- hmm_distance(system.file("extdata", "1DLHA2-7", package="protHMM"), system
 h < h_2
 #> [1] TRUE
 ```
+
+## References
+
+Lyons, J., Dehzangi, A., Heffernan, R., Yang, Y., Zhou, Y., Sharma, A.,
+& Paliwal, K. K. (2015). Advancing the Accuracy of Protein Fold
+Recognition by Utilizing Profiles From Hidden Markov Models. IEEE
+Transactions on Nanobioscience, 14(7), 761–772.
