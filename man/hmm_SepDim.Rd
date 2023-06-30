@@ -26,6 +26,6 @@ h<- hmm_SepDim(system.file("extdata", "1DLHA2-7", package="protHMM"))
 }
 \references{
 Saini, H., Raicar, G., Sharma, A., Lal, S. K., Dehzangi, A., Lyons, J., Paliwal, K. K., Imoto, S., & Miyano, S. (2015).
-Probabilistic expression of spatially varied amino acid dimers into general form of Chou׳s pseudo amino acid composition for protein fold recognition.
+Probabilistic expression of spatially varied amino acid dimers into general form of Chou's pseudo amino acid composition for protein fold recognition.
 Journal of Theoretical Biology, 380, 291–298.
 }

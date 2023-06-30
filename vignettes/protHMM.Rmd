@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
+\DeclareUnicodeCharacter{05F3}{'}
 ## 1: Introduction
 
 The goal of protHMM is to help integrate profile hidden markov model (HMM) representations of proteins into the machine learning and bioinformatics workflow. protHMM ports a number of features from use in Position Specific Scoring Matrices (PSSMs) to HMMs, along with implementing features used with HMMs specifically, which to our knowledge has not been done before. The adoption of HMM representations of proteins derived from HHblits and HMMer also presents an opportunity for innovation; it has been shown that HMMs can benefit from better multiple sequence alignment than PSSMs and thus get better results than corresponding HMMs using similar feature extraction techniques [@lyons-2015]. protHMM implements 20 different feature extraction techniques to provide a comprehensive list of feature sets for use in bioinformatics tasks ranging from protein fold classification to protein-protein interaction. 
@@ -255,7 +255,7 @@ h[1:20]
 
 ## 12: SCSH
 
-This feature is documented by @mohammadi-2022 and was used for protein-protein interaction prediction. The SCSH feature returns the k-mer composition between a protein's consensus sequence given by the HMM and the protein's actual sequence, for k = 2,3. First, all possible k-mers for all of the 20 possible amino acids are calculated (${20^2}$ and ${20^3}$ permutations for 2 and 3-mers respectively). With those permutations, different vectors of length 400 and 8000 are created, vectors $v_2, \space v_3$. Each position on the vectors corresponds to a specific k-mer, i.e $v_2[1] = 'AA'$ and $v_2[1] = 'AAA'$. Then, the protein sequence that corresponds to the HMM scores is extracted, and put into a bipartite graph with the actual protein sequence. Each path of length 1 or 2 is found on the graph, and the corresponding vertices on the graph are noted as possible 2 and 3-mers. For each 2 or 3-mer found from these paths, 1 is added to the position that corresponds to that 2/3-mer in the 2-mer and 3-mer vectors, which are the length 400 and 8000 vectors created previously. The vectors are then returned.
+This feature is documented by @mohammadi-2022 and was used for protein-protein interaction prediction. The SCSH feature returns the k-mer composition between a protein's consensus sequence given by the HMM and the protein's actual sequence, for k = 2,3. First, all possible k-mers for all of the 20 possible amino acids are calculated (${20^2}$ and ${20^3}$ permutations for 2 and 3-mers respectively). With those permutations, different vectors of length 400 and 8000 are created, vectors $v_2, \space v_3$. Each position on the vectors corresponds to a specific k-mer, i.e $v_2[1] = AA$ and $v_2[1] = AAA$. Then, the protein sequence that corresponds to the HMM scores is extracted, and put into a bipartite graph with the actual protein sequence. Each path of length 1 or 2 is found on the graph, and the corresponding vertices on the graph are noted as possible 2 and 3-mers. For each 2 or 3-mer found from these paths, 1 is added to the position that corresponds to that 2/3-mer in the 2-mer and 3-mer vectors, which are the length 400 and 8000 vectors created previously. The vectors are then returned.
 
 #### Examples
 
