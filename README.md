@@ -6,7 +6,9 @@
 <!-- badges: start -->
 
 
-<!-- badges: end --> \## Summary
+<!-- badges: end --> 
+
+## Summary
 
 The goal of protHMM is to help integrate profile hidden markov model
 (HMM) representations of proteins into the machine learning and
