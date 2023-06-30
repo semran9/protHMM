@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # protHMM
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 ## Summary
 

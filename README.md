@@ -4,9 +4,9 @@
 # protHMM
 
 <!-- badges: start -->
-<!-- badges: end -->
 
-## Summary
+[![R-CMD-check](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end --> \## Summary
 
 The goal of protHMM is to help integrate profile hidden markov model
 (HMM) representations of proteins into the machine learning and
