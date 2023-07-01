@@ -7,7 +7,7 @@ Maintainer: Shayaan Emran <shayaan.emran@gmail.com>
 Description: Calculates a comprehensive list of features from profile hidden Markov models (HMMs) of proteins. 
     Adapts and ports features for use with HMMs instead of Position Specific Scoring Matrices, in order to take 
     advantage of more accurate multiple sequence alignment by programs such as 'HHBlits' <DOI:10.1038/nmeth.1818> 
-    and 'HMMer' <http://hmmer.org>.Features calculated by this package can be used for protein fold classification, 
+    and 'HMMer' <http://hmmer.org>. Features calculated by this package can be used for protein fold classification, 
     protein structural class prediction, sub-cellular localization and protein-protein interaction, among other tasks. 
     Some examples of features extracted are found in Song et al. (2018) <DOI:10.3390/app8010089>, 
     Jin & Zhu (2021) <DOI:10.1155/2021/8629776>, Lyons et al. (2015) <DOI:10.1109/tnb.2015.2457906> and 
