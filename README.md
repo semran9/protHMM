@@ -4,11 +4,9 @@
 # protHMM
 
 <!-- badges: start -->
-![R CMD check](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml/badge.svg)
 
-<!-- badges: end --> 
-
-## Summary
+[![R-CMD-check](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end --> \## Summary
 
 The goal of protHMM is to help integrate profile hidden markov model
 (HMM) representations of proteins into the machine learning and
@@ -16,9 +14,10 @@ bioinformatics workflow. protHMM ports a number of features from use in
 Position Specific Scoring Matrices (PSSMs) to HMMs, along with
 implementing features used with HMMs specifically, which to our
 knowledge has not been done before. The adoption of HMM representations
-of proteins derived from HHblits and HMMer also presents an opportunity
-for innovation; it has been shown that HMMs can benefit from better
-multiple sequence alignment than PSSMs and thus get better results than
+of proteins derived from [HHblits](https://doi.org/10.1038/nmeth.1818)
+and [HMMer](http://hmmer.org) also presents an opportunity for
+innovation; it has been shown that HMMs can benefit from better multiple
+sequence alignment than PSSMs and thus get better results than
 corresponding HMMs using similar feature extraction techniques (Lyons et
 al. 2015). protHMM implements 20 different feature extraction techniques
 to provide a comprehensive list of feature sets for use in
