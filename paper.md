@@ -14,7 +14,6 @@ bibliography: References.bib
 authors:
 - name: Shayaan M. Emran
   orcid: "0009-0009-4222-1104"
-  equal-contrib: yes
   affiliation: '1'
   corresponding: yes
 affiliations:
