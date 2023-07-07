@@ -42,12 +42,12 @@ protHMM can also be install from CRAN:
 install.packages("protHMM", repos = "http://cran.us.r-project.org")
 #> 
 #> The downloaded binary packages are in
-#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpYdI7pX/downloaded_packages
+#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpAcMKna/downloaded_packages
 ```
 
 ## Functions List
 
-A more comperhensive list of functions and the calculations behind the
+A more comprehensive list of functions and the calculations behind the
 functions can be found
 [here](https://semran9.github.io/protHMM/articles/protHMM.html).
 

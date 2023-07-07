@@ -41,7 +41,7 @@ install.packages("protHMM", repos = "http://cran.us.r-project.org")
 
 ## Functions List
 
-A more comperhensive list of functions and the calculations behind the functions can be found [here](https://semran9.github.io/protHMM/articles/protHMM.html).
+A more comprehensive list of functions and the calculations behind the functions can be found [here](https://semran9.github.io/protHMM/articles/protHMM.html).
 
 hmm_ac()
 
