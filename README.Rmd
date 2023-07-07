@@ -32,7 +32,7 @@ You can install the development version of protHMM from [GitHub](https://github.
 devtools::install_github("semran9/protHMM")
 ```
 
-protHMM can also be install from CRAN:
+protHMM can also be installed from CRAN:
 
 ```{r}
 install.packages("protHMM", repos = "http://cran.us.r-project.org")

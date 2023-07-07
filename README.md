@@ -36,13 +36,13 @@ You can install the development version of protHMM from
 devtools::install_github("semran9/protHMM")
 ```
 
-protHMM can also be install from CRAN:
+protHMM can also be installed from CRAN:
 
 ``` r
 install.packages("protHMM", repos = "http://cran.us.r-project.org")
 #> 
 #> The downloaded binary packages are in
-#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpAcMKna/downloaded_packages
+#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpHf6jAu/downloaded_packages
 ```
 
 ## Functions List
