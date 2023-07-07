@@ -30,7 +30,7 @@ Many of these methods rely on a key piece: the features extracted from the prote
 
 Installation of protHMM can be done through the official CRAN repository using the command `install.packages("protHMM")`. 
 
-# Statement of need
+# Statement of Need
 
 @lyons-2015 and @xia-2016 have both shown the useful of features derived from HMM representations of proteins in bioinformatics tasks such as protein fold classification. However, there are limited software implementations of the feature extraction methods discussed in the aforementioned papers. 
 
