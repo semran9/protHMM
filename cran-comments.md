@@ -1,6 +1,6 @@
 ## Notes
 
-This a resubmission that fixes syntax errors in regards references to software in the DESCRIPTION file.
+This a resubmission that fixes syntax errors, and changes citations in the DESCRIPTION file.
 
 ## R CMD check results
 
