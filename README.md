@@ -6,7 +6,9 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/semran9/protHMM/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end --> \## Summary
+<!-- badges: end -->
+
+## Summary
 
 The goal of protHMM is to help integrate profile hidden markov model
 (HMM) representations of proteins into the machine learning and
@@ -32,6 +34,15 @@ You can install the development version of protHMM from
 ``` r
 # install.packages("devtools")
 devtools::install_github("semran9/protHMM")
+```
+
+protHMM can also be install from CRAN:
+
+``` r
+install.packages("protHMM", repos = "http://cran.us.r-project.org")
+#> 
+#> The downloaded binary packages are in
+#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpH0AkvW/downloaded_packages
 ```
 
 ## Functions List
