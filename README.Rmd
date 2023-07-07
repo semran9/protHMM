@@ -77,7 +77,7 @@ hmm_SCSH()
 
 hmm_SepDim()
 
-hmm_Sigle_Average()
+hmm_Single_Average()
 
 hmm_smooth()
 

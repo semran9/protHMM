@@ -42,7 +42,7 @@ protHMM can also be installed from CRAN:
 install.packages("protHMM", repos = "http://cran.us.r-project.org")
 #> 
 #> The downloaded binary packages are in
-#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpHf6jAu/downloaded_packages
+#>  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpRIMEWh/downloaded_packages
 ```
 
 ## Functions List
@@ -85,7 +85,7 @@ hmm_SCSH()
 
 hmm_SepDim()
 
-hmm_Sigle_Average()
+hmm_Single_Average()
 
 hmm_smooth()
 
