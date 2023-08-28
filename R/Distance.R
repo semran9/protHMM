@@ -38,12 +38,15 @@ hmm_distance<- function(hmm_1, hmm_2){
   y[y == "*"]<- 0.0001
   y<- matrix(as.numeric(y), ncol = ncol(y))
   I<- matrix(0, nrow(x), nrow(y))
-  for(m in 1:nrow(x)){
-    for(n in 1:nrow(y)){
-      number<- 1 - sum(x[m,] * t(y[n,]))/(sum(x[m,] * t(x[m,])) * sum(y[n,] * t(y[n,])))
-      I[m,n]<- number
-    }
-  }
+  #for(m in 1:nrow(x)){
+   # for(n in 1:nrow(y)){
+    #  number<- 1 - sum(x[m,] * t(y[n,]))/(sum(x[m,] * t(x[m,])) * sum(y[n,] * t(y[n,])))
+    #  I[m,n]<- number
+  #  }
+  #}
+  a_den <- sum(x %*% t(x))
+  b_den <- sum(y %*% t(y))
+  I<- 1 - (x %*% t(y))/(a_den*b_den)
   D<- I
   for(m in 1:nrow(I)){
     for(n in 1:ncol(I)){
