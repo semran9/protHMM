@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">protHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +86,9 @@ bioinformatics workflow. protHMM ports a number of features from use in
 Position Specific Scoring Matrices (PSSMs) to HMMs, along with
 implementing features used with HMMs specifically, which to our
 knowledge has not been done before. The adoption of HMM representations
-of proteins derived from HHblits and HMMer also presents an opportunity
-for innovation; it has been shown that HMMs can benefit from better
-multiple sequence alignment than PSSMs and thus get better results than
+of proteins derived from <a href="https://doi.org/10.1038/nmeth.1818" class="external-link">HHblits</a> and <a href="http://hmmer.org" class="external-link">HMMer</a> also presents an opportunity for
+innovation; it has been shown that HMMs can benefit from better multiple
+sequence alignment than PSSMs and thus get better results than
 corresponding HMMs using similar feature extraction techniques <span class="citation">(Lyons et al. 2015)</span>. protHMM implements 20
 different feature extraction techniques to provide a comprehensive list
 of feature sets for use in bioinformatics tasks ranging from protein
@@ -357,7 +357,7 @@ fold recognition.</p>
 <span><span class="va">h</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/hmm_distance.html">hmm_distance</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"1DLHA2-7"</span>, package<span class="op">=</span><span class="st">"protHMM"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"1TEN-7"</span>, </span>
 <span>                                                                                      package<span class="op">=</span><span class="st">"protHMM"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">h</span></span>
-<span><span class="co">#&gt; [1] 99.90334</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 100</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -538,8 +538,8 @@ acids are calculated (<span class="math inline">\({20^2}\)</span> and
 <span class="math inline">\({20^3}\)</span> permutations for 2 and
 3-mers respectively). With those permutations, different vectors of
 length 400 and 8000 are created, vectors <span class="math inline">\(v_2, \space v_3\)</span>. Each position on the
-vectors corresponds to a specific k-mer, i.e <span class="math inline">\(v_2[1] = 'AA'\)</span> and <span class="math inline">\(v_2[1] = 'AAA'\)</span>. Then, the protein
-sequence that corresponds to the HMM scores is extracted, and put into a
+vectors corresponds to a specific k-mer, i.e <span class="math inline">\(v_2[1] = AA\)</span> and <span class="math inline">\(v_2[1] = AAA\)</span>. Then, the protein sequence
+that corresponds to the HMM scores is extracted, and put into a
 bipartite graph with the actual protein sequence. Each path of length 1
 or 2 is found on the graph, and the corresponding vertices on the graph
 are noted as possible 2 and 3-mers. For each 2 or 3-mer found from these
@@ -705,7 +705,7 @@ converts the columns into probabilities.</p>
 An, Ji-Yong, Yong Zhou, Yu-Jun Zhao, and Zi-Ji Yan. 2019. <span>“<span class="nocase">An Efficient Feature Extraction Technique Based on Local
 Coding PSSM and Multifeatures Fusion for Predicting Protein-Protein
 Interactions</span>.”</span> <em>Evolutionary Bioinformatics</em> 15
-(January): 117693431987992. <a href="https://doi.org/10.1177/1176934319879920" class="external-link">https://doi.org/10.1177/1176934319879920</a>.
+(January): 117693431987992.
 </div>
 <div id="ref-phonTools" class="csl-entry">
 Barreda, Santiago. 2015. <em>phonTools: Functions for Phonetics in
@@ -787,7 +787,7 @@ Research International</em> 2020 (January): 1–13. <a href="https://doi.org/10.
 Saini, Harsh, Gaurav Raicar, Alok Sharma, Sunil K. Lal, Abdollah
 Dehzangi, James Lyons, Kuldip K. Paliwal, Seiya Imoto, and Satoru
 Miyano. 2015. <span>“<span class="nocase">Probabilistic expression of
-spatially varied amino acid dimers into general form of Chou׳s pseudo
+spatially varied amino acid dimers into general form of Chou’s pseudo
 amino acid composition for protein fold recognition</span>.”</span>
 <em>Journal of Theoretical Biology</em> 380 (September): 291–98. <a href="https://doi.org/10.1016/j.jtbi.2015.05.030" class="external-link">https://doi.org/10.1016/j.jtbi.2015.05.030</a>.
 </div>

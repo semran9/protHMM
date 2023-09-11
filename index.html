@@ -5,22 +5,28 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Calculates a comprehensive list of features from profile hidden markov models (HMMs) of proteins. 
+<meta name="description" content="Calculates a comprehensive list of features from profile hidden Markov models (HMMs) of proteins. 
     Adapts and ports features for use with HMMs instead of Position Specific Scoring Matrices, in order to take 
-    advantage of more accurate multiple sequence alignment by programs such as HHBlits and HMMer. Features calculated 
-    by this package can be used for protein fold classification, protein structural class prediction, subcellular 
-    localization and protein-protein interaction, among other tasks.">
+    advantage of more accurate multiple sequence alignment by programs such as HHBlits &lt;DOI:10.1038/nmeth.1818&gt; 
+    and HMMer &lt;http://hmmer.org&gt;. Features calculated by this package can be used for protein fold classification, 
+    protein structural class prediction, sub-cellular localization and protein-protein interaction, among other tasks. 
+    Some examples of features extracted are found in Song et al. (2018) &lt;DOI:10.3390/app8010089&gt;, 
+    Jin &amp; Zhu (2021) &lt;DOI:10.1155/2021/8629776&gt;, Lyons et al. (2015) &lt;DOI:10.1109/tnb.2015.2457906&gt; and 
+    Saini et al. (2015) &lt;DOI:10.1016/j.jtbi.2015.05.030&gt;.">
 <title>Protein Feature Extraction from Profile Hidden Markov Models • protHMM</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Protein Feature Extraction from Profile Hidden Markov Models">
-<meta property="og:description" content="Calculates a comprehensive list of features from profile hidden markov models (HMMs) of proteins. 
+<meta property="og:description" content="Calculates a comprehensive list of features from profile hidden Markov models (HMMs) of proteins. 
     Adapts and ports features for use with HMMs instead of Position Specific Scoring Matrices, in order to take 
-    advantage of more accurate multiple sequence alignment by programs such as HHBlits and HMMer. Features calculated 
-    by this package can be used for protein fold classification, protein structural class prediction, subcellular 
-    localization and protein-protein interaction, among other tasks.">
+    advantage of more accurate multiple sequence alignment by programs such as HHBlits &lt;DOI:10.1038/nmeth.1818&gt; 
+    and HMMer &lt;http://hmmer.org&gt;. Features calculated by this package can be used for protein fold classification, 
+    protein structural class prediction, sub-cellular localization and protein-protein interaction, among other tasks. 
+    Some examples of features extracted are found in Song et al. (2018) &lt;DOI:10.3390/app8010089&gt;, 
+    Jin &amp; Zhu (2021) &lt;DOI:10.1155/2021/8629776&gt;, Lyons et al. (2015) &lt;DOI:10.1109/tnb.2015.2457906&gt; and 
+    Saini et al. (2015) &lt;DOI:10.1016/j.jtbi.2015.05.030&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,7 +40,7 @@
     
     <a class="navbar-brand me-2" href="index.html">protHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +82,10 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of protHMM is to help integrate profile hidden markov model (HMM) representations of proteins into the machine learning and bioinformatics workflow. protHMM ports a number of features from use in Position Specific Scoring Matrices (PSSMs) to HMMs, along with implementing features used with HMMs specifically, which to our knowledge has not been done before. The adoption of HMM representations of proteins derived from HHblits and HMMer also presents an opportunity for innovation; it has been shown that HMMs can benefit from better multiple sequence alignment than PSSMs and thus get better results than corresponding HMMs using similar feature extraction techniques (Lyons et al. 2015). protHMM implements 20 different feature extraction techniques to provide a comprehensive list of feature sets for use in bioinformatics tasks ranging from protein fold classification to protein-protein interaction.</p>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
+<p>The goal of protHMM is to help integrate profile hidden markov model (HMM) representations of proteins into the machine learning and bioinformatics workflow. protHMM ports a number of features from use in Position Specific Scoring Matrices (PSSMs) to HMMs, along with implementing features used with HMMs specifically, which to our knowledge has not been done before. The adoption of HMM representations of proteins derived from <a href="https://doi.org/10.1038/nmeth.1818" class="external-link">HHblits</a> and <a href="http://hmmer.org" class="external-link">HMMer</a> also presents an opportunity for innovation; it has been shown that HMMs can benefit from better multiple sequence alignment than PSSMs and thus get better results than corresponding HMMs using similar feature extraction techniques (Lyons et al. 2015). protHMM implements 20 different feature extraction techniques to provide a comprehensive list of feature sets for use in bioinformatics tasks ranging from protein fold classification to protein-protein interaction.</p>
 <div class="section level4">
 <h4 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h4>
@@ -84,10 +93,18 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"semran9/protHMM"</span><span class="op">)</span></span></code></pre></div>
+<p>protHMM can also be installed from CRAN:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"protHMM"</span>, repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; The downloaded binary packages are in</span></span>
+<span><span class="co">#&gt;  /var/folders/2z/7q42mmyn5f18vx697sj_30p40000gn/T//RtmpKmgX8K/downloaded_packages</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="functions-list">Functions List<a class="anchor" aria-label="anchor" href="#functions-list"></a>
 </h2>
+<p>A more comprehensive list of functions and the calculations behind the functions can be found <a href="https://semran9.github.io/protHMM/articles/protHMM.html">here</a>.</p>
 <p>hmm_ac()</p>
 <p>hmm_bigrams()</p>
 <p>hmm_cc()</p>
@@ -105,7 +122,7 @@
 <p>hmm_read()</p>
 <p>hmm_SCSH()</p>
 <p>hmm_SepDim()</p>
-<p>hmm_Sigle_Average()</p>
+<p>hmm_Single_Average()</p>
 <p>hmm_smooth()</p>
 <p>hmm_svd()</p>
 <p>hmm_trigrams()</p>
@@ -113,7 +130,7 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## this shows the functionality of hmm_distance, which calculates a similarity score between two proteins</span></span>
 <span><span class="co">## other functions are documented fully in the protHMM vignette</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/semran9/protHMM/" class="external-link">protHMM</a></span><span class="op">)</span></span>
@@ -133,7 +150,9 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=protHMM" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/semran9/protHMM/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/semran9/protHMM/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
